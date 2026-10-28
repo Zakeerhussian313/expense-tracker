@@ -1,6 +1,12 @@
 
 import { useState } from "react";
 import "./App.css";
+import ExpenseList from "./ExpenseList.jsx";
+import {
+  getExpenseCount,
+  getExpenseTotal,
+  removeExpenseById,
+} from "./expenseMetrics.js";
 
 const categories = ["Food", "Travel", "Bills", "Other"];
 
@@ -54,9 +60,7 @@ function App() {
   }
 
   function deleteExpense(id) {
-    setExpenses((current) =>
-      current.filter((expense) => expense.id !== id)
-    );
+    setExpenses((current) => removeExpenseById(current, id));
   }
 
   const visibleExpenses =
@@ -64,10 +68,8 @@ function App() {
       ? expenses
       : expenses.filter((expense) => expense.category === filter);
 
-  const total = visibleExpenses.reduce(
-    (sum, expense) => sum + expense.amount,
-    0
-  );
+  const total = getExpenseTotal(visibleExpenses);
+  const visibleCount = getExpenseCount(visibleExpenses);
 
   return (
     <main className="app">
@@ -135,7 +137,7 @@ function App() {
 
         <div className="summary-card">
           <p>Expenses displayed</p>
-          <h2 data-cy="count">{visibleExpenses.length}</h2>
+          <h2 data-cy="count">{visibleCount}</h2>
         </div>
       </section>
 
@@ -158,37 +160,7 @@ function App() {
           </select>
         </div>
 
-        {visibleExpenses.length === 0 ? (
-          <p className="empty">No expenses to display yet.</p>
-        ) : (
-          <ul className="expense-list">
-            {visibleExpenses.map((expense) => (
-              <li
-                className="expense-item"
-                data-cy="expense-item"
-                key={expense.id}
-              >
-                <div className="expense-details">
-                  <strong>{expense.title}</strong>
-                  <span>{expense.category}</span>
-                </div>
-
-                <div className="expense-actions">
-                  <strong>₹{expense.amount.toFixed(2)}</strong>
-                  <button
-                    type="button"
-                    className="delete-button"
-                    data-cy="delete-expense"
-                    aria-label={`Delete ${expense.title}`}
-                    onClick={() => deleteExpense(expense.id)}
-                  >
-                    Delete
-                  </button>
-                </div>
-              </li>
-            ))}
-          </ul>
-        )}
+        <ExpenseList expenses={visibleExpenses} onDelete={deleteExpense} />
       </section>
 
       <footer>Spend wisely. Save consistently.</footer>

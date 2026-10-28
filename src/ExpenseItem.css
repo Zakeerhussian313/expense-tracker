@@ -1,0 +1,34 @@
+.expense-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px 0;
+  border-bottom: 1px solid #eceef4;
+}
+
+.expense-details,
+.expense-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.expense-details span {
+  color: #72768a;
+  font-size: 13px;
+}
+
+.expense-actions {
+  align-items: flex-end;
+}
+
+.delete-button {
+  background: #fff0f0;
+  color: #c62828;
+  padding: 7px 10px;
+}
+
+.delete-button:hover {
+  background: #ffe0e0;
+}

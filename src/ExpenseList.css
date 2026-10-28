@@ -1,0 +1,11 @@
+.expense-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.empty {
+  color: #72768a;
+  text-align: center;
+  padding: 24px 0;
+}
