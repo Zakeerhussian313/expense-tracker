@@ -1,56 +1,21 @@
 
 import { useState } from "react";
 import "./App.css";
+import ExpenseForm from "./ExpenseForm.jsx";
+import { EXPENSE_CATEGORIES } from "./expenseCategories.js";
 
-const categories = ["Food", "Travel", "Bills", "Other"];
-
-// App manages the expenses and the currently selected category.
+// App manages expenses and the currently selected filter.
 function App() {
   const [expenses, setExpenses] = useState([]);
-  const [title, setTitle] = useState("");
-  const [amount, setAmount] = useState("");
-  const [category, setCategory] = useState("Food");
   const [filter, setFilter] = useState("All");
-  const [error, setError] = useState("");
 
-  function addExpense(e) {
-    e.preventDefault();
-
-    const cleanTitle = title.trim();
-    const numericAmount = Number(amount);
-
-    if (!cleanTitle) {
-      setError("Please enter an expense title.");
-      return;
-    }
-
-    if (amount.trim() === "" || !Number.isFinite(numericAmount)) {
-      setError("Please enter a valid amount.");
-      return;
-    }
-
-    if (numericAmount <= 0) {
-      setError("Amount must be greater than zero.");
-      return;
-    }
-
-    if (numericAmount > 100000) {
-      setError("Amount cannot exceed 100000.");
-      return;
-    }
-
+  function addExpense(expense) {
     const newExpense = {
       id: crypto.randomUUID(),
-      title: cleanTitle,
-      amount: numericAmount,
-      category,
+      ...expense,
     };
 
     setExpenses((current) => [...current, newExpense]);
-    setTitle("");
-    setAmount("");
-    setCategory("Food");
-    setError("");
   }
 
   function deleteExpense(id) {
@@ -80,49 +45,7 @@ function App() {
       <section className="card">
         <h2>Add an expense</h2>
 
-        <form onSubmit={addExpense}>
-          <label htmlFor="title">Expense title</label>
-          <input
-            id="title"
-            data-cy="title"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            placeholder="e.g. Lunch"
-          />
-
-          <label htmlFor="amount">Amount (₹)</label>
-          <input
-            id="amount"
-            data-cy="amount"
-            type="number"
-            min="0.01"
-            max="100000"
-            step="any"
-            value={amount}
-            onChange={(e) => setAmount(e.target.value)}
-            placeholder="e.g. 250"
-          />
-
-          <label htmlFor="category">Category</label>
-          <select
-            id="category"
-            data-cy="category"
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
-          >
-            {categories.map((item) => (
-              <option key={item} value={item}>
-                {item}
-              </option>
-            ))}
-          </select>
-
-          {error && <p className="error" role="alert">{error}</p>}
-
-          <button type="submit" data-cy="add-expense">
-            + Add Expense
-          </button>
-        </form>
+        <ExpenseForm onAddExpense={addExpense} />
       </section>
 
       <section className="summary">
@@ -150,7 +73,7 @@ function App() {
             onChange={(e) => setFilter(e.target.value)}
           >
             <option value="All">All categories</option>
-            {categories.map((item) => (
+            {EXPENSE_CATEGORIES.map((item) => (
               <option key={item} value={item}>
                 {item}
               </option>
