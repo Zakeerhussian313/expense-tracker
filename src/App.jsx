@@ -1,122 +1,199 @@
-import { useState } from 'react'
-import heroImg from './assets/hero.png'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import './App.css'
 
+import { useState } from "react";
+import "./App.css";
+
+const categories = ["Food", "Travel", "Bills", "Other"];
+
+// App manages the expenses and the currently selected category.
 function App() {
-  const [count, setCount] = useState(0)
+  const [expenses, setExpenses] = useState([]);
+  const [title, setTitle] = useState("");
+  const [amount, setAmount] = useState("");
+  const [category, setCategory] = useState("Food");
+  const [filter, setFilter] = useState("All");
+  const [error, setError] = useState("");
+
+  function addExpense(e) {
+    e.preventDefault();
+
+    const cleanTitle = title.trim();
+    const numericAmount = Number(amount);
+
+    if (!cleanTitle) {
+      setError("Please enter an expense title.");
+      return;
+    }
+
+    if (amount.trim() === "" || !Number.isFinite(numericAmount)) {
+      setError("Please enter a valid amount.");
+      return;
+    }
+
+    if (numericAmount <= 0) {
+      setError("Amount must be greater than zero.");
+      return;
+    }
+
+    if (numericAmount > 100000) {
+      setError("Amount cannot exceed 100000.");
+      return;
+    }
+
+    const newExpense = {
+      id: crypto.randomUUID(),
+      title: cleanTitle,
+      amount: numericAmount,
+      category,
+    };
+
+    setExpenses((current) => [...current, newExpense]);
+    setTitle("");
+    setAmount("");
+    setCategory("Food");
+    setError("");
+  }
+
+  function deleteExpense(id) {
+    setExpenses((current) =>
+      current.filter((expense) => expense.id !== id)
+    );
+  }
+
+  const visibleExpenses =
+    filter === "All"
+      ? expenses
+      : expenses.filter((expense) => expense.category === filter);
+
+  const total = visibleExpenses.reduce(
+    (sum, expense) => sum + expense.amount,
+    0
+  );
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
+    <main className="app">
+      <header className="header">
+        <p className="eyebrow">PERSONAL FINANCE</p>
+        <h1>Expense Tracker</h1>
+        <p>Keep track of where your money goes.</p>
+      </header>
+
+      <section className="card">
+        <h2>Add an expense</h2>
+
+        <form onSubmit={addExpense}>
+          <label htmlFor="title">Expense title</label>
+          <input
+            id="title"
+            data-cy="title"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            placeholder="e.g. Lunch"
+          />
+
+          <label htmlFor="amount">Amount (₹)</label>
+          <input
+            id="amount"
+            data-cy="amount"
+            type="number"
+            min="0.01"
+            max="100000"
+            step="any"
+            value={amount}
+            onChange={(e) => setAmount(e.target.value)}
+            placeholder="e.g. 250"
+          />
+
+          <label htmlFor="category">Category</label>
+          <select
+            id="category"
+            data-cy="category"
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+          >
+            {categories.map((item) => (
+              <option key={item} value={item}>
+                {item}
+              </option>
+            ))}
+          </select>
+
+          {error && <p className="error" role="alert">{error}</p>}
+
+          <button type="submit" data-cy="add-expense">
+            + Add Expense
+          </button>
+        </form>
       </section>
 
-      <div className="ticks"></div>
-
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
+      <section className="summary">
+        <div className="summary-card">
+          <p>Total expenses</p>
+          <h2 data-cy="total">
+            ₹{total.toFixed(2)}
+          </h2>
         </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
+
+        <div className="summary-card">
+          <p>Expenses displayed</p>
+          <h2 data-cy="count">{visibleExpenses.length}</h2>
         </div>
       </section>
 
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+      <section className="card">
+        <div className="list-header">
+          <h2>Your expenses</h2>
+
+          <select
+            aria-label="Filter expenses by category"
+            data-cy="filter"
+            value={filter}
+            onChange={(e) => setFilter(e.target.value)}
+          >
+            <option value="All">All categories</option>
+            {categories.map((item) => (
+              <option key={item} value={item}>
+                {item}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        {visibleExpenses.length === 0 ? (
+          <p className="empty">No expenses to display yet.</p>
+        ) : (
+          <ul className="expense-list">
+            {visibleExpenses.map((expense) => (
+              <li
+                className="expense-item"
+                data-cy="expense-item"
+                key={expense.id}
+              >
+                <div className="expense-details">
+                  <strong>{expense.title}</strong>
+                  <span>{expense.category}</span>
+                </div>
+
+                <div className="expense-actions">
+                  <strong>₹{expense.amount.toFixed(2)}</strong>
+                  <button
+                    type="button"
+                    className="delete-button"
+                    data-cy="delete-expense"
+                    aria-label={`Delete ${expense.title}`}
+                    onClick={() => deleteExpense(expense.id)}
+                  >
+                    Delete
+                  </button>
+                </div>
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
+
+      <footer>Spend wisely. Save consistently.</footer>
+    </main>
+  );
 }
 
-export default App
+export default App;
