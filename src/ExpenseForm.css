@@ -1,47 +1,67 @@
 .expense-form {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
 }
 
 .expense-form label {
   font-weight: 600;
-  font-size: 14px;
+  font-size: 13px;
+  color: #394256;
+  margin-bottom: -4px;
 }
 
 .expense-form input,
 .expense-form select {
   width: 100%;
-  padding: 12px;
-  border: 1px solid #dfe2ec;
-  border-radius: 8px;
-  background: white;
+  min-width: 0;
+  height: 46px;
+  padding: 0 13px;
+  border: 1px solid #d9deea;
+  border-radius: 9px;
+  background: #fff;
   color: #000;
-  margin-bottom: 8px;
+  margin: 0 0 8px;
+  transition: border-color 140ms ease, box-shadow 140ms ease;
 }
 
 .expense-form input:focus,
 .expense-form select:focus {
-  outline: 2px solid #b9b1ff;
+  outline: none;
   border-color: #6658d3;
+  box-shadow: 0 0 0 3px #6658d31c;
 }
 
 .expense-form button {
-  padding: 12px 16px;
+  grid-column: 1 / -1;
+  justify-self: start;
+  min-height: 46px;
+  padding: 0 20px;
   border: 0;
-  border-radius: 8px;
-  background: #6658d3;
+  border-radius: 9px;
+  background: #5143b9;
   color: white;
   cursor: pointer;
   font-weight: 600;
+  transition: background 140ms ease, transform 140ms ease;
 }
 
 .expense-form button:hover {
-  background: #5143b9;
+  background: #403493;
+}
+
+.expense-form button:active {
+  transform: translateY(1px);
 }
 
 .expense-form .error {
   color: #c62828;
   margin: 0 0 8px;
   font-size: 14px;
+}
+
+@media (max-width: 560px) {
+  .expense-form button {
+    width: 100%;
+  }
 }

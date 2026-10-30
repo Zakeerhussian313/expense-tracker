@@ -5,9 +5,9 @@
 
 body {
   margin: 0;
-  font-family: Arial, Helvetica, sans-serif;
-  background: #f4f6fb;
-  color: #20243a;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: #f5f7fb;
+  color: #202638;
 }
 
 button,
@@ -17,13 +17,13 @@ select {
 }
 
 .app {
-  width: min(760px, 92%);
-  margin: 40px auto;
+  width: min(820px, calc(100% - 40px));
+  margin: 48px auto;
 }
 
 .header {
   text-align: center;
-  margin-bottom: 28px;
+  margin-bottom: 32px;
 }
 
 .eyebrow {
@@ -34,8 +34,10 @@ select {
 }
 
 .header h1 {
-  margin: 8px 0;
-  font-size: 36px;
+  margin: 10px 0 8px;
+  color: #172033;
+  font-size: clamp(30px, 5vw, 40px);
+  letter-spacing: -1.2px;
 }
 
 .header p:last-child {
@@ -44,56 +46,19 @@ select {
 
 .card,
 .summary-card {
-  background: white;
-  border-radius: 14px;
-  padding: 24px;
-  margin-bottom: 20px;
-  box-shadow: 0 5px 20px #20243a0a;
+  background: #fff;
+  border: 1px solid #e8ebf2;
+  border-radius: 16px;
+  padding: 26px;
+  margin-bottom: 22px;
+  box-shadow: 0 8px 26px #20243a0a;
 }
 
 .card h2 {
-  margin-top: 0;
-}
-
-form {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-label {
-  font-weight: 600;
-  font-size: 14px;
-}
-
-input,
-select {
-  width: 100%;
-  padding: 12px;
-  border: 1px solid #dfe2ec;
-  border-radius: 8px;
-  background: white;
-  margin-bottom: 8px;
-}
-
-input:focus,
-select:focus {
-  outline: 2px solid #b9b1ff;
-  border-color: #6658d3;
-}
-
-button {
-  padding: 12px 16px;
-  border: 0;
-  border-radius: 8px;
-  background: #6658d3;
-  color: white;
-  cursor: pointer;
-  font-weight: 600;
-}
-
-button:hover {
-  background: #5143b9;
+  margin: 0 0 22px;
+  color: #172033;
+  font-size: 21px;
+  letter-spacing: -0.35px;
 }
 
 .error {
@@ -105,8 +70,10 @@ button:hover {
 .summary {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 20px;
+  gap: 18px;
 }
+
+.summary-card { margin-bottom: 22px; }
 
 .summary-card p {
   color: #72768a;
@@ -115,6 +82,9 @@ button:hover {
 
 .summary-card h2 {
   color: #5143b9;
+  font-size: 26px;
+  margin-bottom: 0;
+  letter-spacing: -0.5px;
   overflow-wrap: anywhere;
 }
 
@@ -126,14 +96,18 @@ button:hover {
 }
 
 .list-header h2 {
+  margin: 0;
   color: #20243a;
+  font-size: 21px;
 }
 
 .list-header select {
   width: auto;
   max-width: 55%;
   margin: 0;
+  background-color: #fff;
   color: #20243a;
+  color-scheme: light;
 }
 
 .expense-list {
@@ -147,7 +121,7 @@ button:hover {
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  padding: 16px 0;
+  padding: 18px 2px;
   border-bottom: 1px solid #eceef4;
 }
 
@@ -155,7 +129,7 @@ button:hover {
 .expense-actions {
   display: flex;
   flex-direction: column;
-  gap: 7px;
+  gap: 8px;
 }
 
 .expense-details span {
@@ -180,7 +154,7 @@ button:hover {
 .empty {
   color: #72768a;
   text-align: center;
-  padding: 24px 0;
+  padding: 30px 0;
 }
 
 footer {
@@ -192,24 +166,26 @@ footer {
 
 @media (max-width: 480px) {
   .app {
-    margin: 24px auto;
-  }
-
-  .header h1 {
-    font-size: 29px;
+    width: min(100% - 28px, 820px);
+    margin: 28px auto;
   }
 
   .card,
   .summary-card {
-    padding: 18px;
+    padding: 20px;
+    border-radius: 14px;
   }
 
   .summary {
-    gap: 12px;
+    gap: 10px;
   }
 
   .summary-card h2 {
-    font-size: 20px;
+    font-size: 19px;
+  }
+
+  .summary-card p {
+    font-size: 13px;
   }
 
   .list-header {
