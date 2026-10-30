@@ -125,10 +125,15 @@ button:hover {
   gap: 16px;
 }
 
+.list-header h2 {
+  color: #20243a;
+}
+
 .list-header select {
   width: auto;
   max-width: 55%;
   margin: 0;
+  color: #20243a;
 }
 
 .expense-list {
